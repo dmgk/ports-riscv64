@@ -1,7 +1,5 @@
-# Created by: Devon H. O'Dell <devon.odell@gmail.com>
-
 PORTNAME=	go
-DISTVERSION?=	g20220609
+DISTVERSION?=	g20221014
 PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES?=	https://github.com/dmgk/go-bootstrap/releases/download/${BOOTSTRAP_TAG_${ARCH}:U${BOOTSTRAP_TAG}}/:bootstrap \
@@ -36,8 +34,7 @@ CPE_VENDOR=	golang
 .ifndef MASTERDIR
 USE_GITHUB=	yes
 GH_ACCOUNT=	golang
-# go1.19beta1
-GH_TAGNAME=	2cfbef438049fd4c3f73d1562773ad1f93900897
+GH_TAGNAME=	ae60636ab14e1bd49a8e5d818a5da8a526e59969
 .endif
 
 SHEBANG_FILES=	misc/wasm/go_js_wasm_exec \
@@ -52,7 +49,7 @@ SOFTFLOAT_DESC=	Use soft float on non-SSE2 processors (Pentium 4 and older)
 SOFTFLOAT_VARS=	GO386=softfloat
 
 BOOTSTRAP_TAG=	go1.17.9
-BOOTSTRAP_TAG_riscv64=	go1.18beta2-1679-g4bdf93a078
+BOOTSTRAP_TAG_riscv64=	go1.19beta1-1531-g15e26698cc
 GO_SUFFIX=	${PKGNAMESUFFIX}
 
 GOARCH_aarch64=	arm64
@@ -66,8 +63,8 @@ GOARM_armv7=	7
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == riscv64
-EXTRA_PATCHES=	${PATCHDIR}/go-riscv.patch:-p1
+.if ${ARCH} == riscv64 && ${OSREL:R} < 13
+IGNORE=		go/riscv64 requires FreeBSD 13
 .endif
 
 post-extract:
